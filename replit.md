@@ -1,45 +1,58 @@
-# [Project name]
+# Jefferson Perolino — Portfolio
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A professional single-page portfolio website for Jefferson Perolino, a Virtual Assistant specializing in financial management and professional writing.
 
 ## Run & Operate
 
+- `pnpm --filter @workspace/portfolio run dev` — run the portfolio (port auto-assigned)
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required env: `VITE_FORMSPREE_ENDPOINT` — Formspree form endpoint (contact form)
+- Required env: `DATABASE_URL` — Postgres connection string (API server only)
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Frontend: React + Vite, Tailwind CSS, framer-motion, lucide-react
+- Forms: react-hook-form + zod, submitted to Formspree
+- API: Express 5 (backend, currently unused by portfolio)
+- DB: PostgreSQL + Drizzle ORM (unused by portfolio)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/portfolio/src/pages/home.tsx` — home page composing all sections
+- `artifacts/portfolio/src/components/sections/` — individual page sections
+- `artifacts/portfolio/src/components/layout/` — Navbar, Footer
+- `artifacts/portfolio/src/index.css` — theme palette (HSL CSS vars, DM Sans + Playfair Display)
+- `artifacts/portfolio/src/App.tsx` — wouter router
+- `lib/api-spec/openapi.yaml` — OpenAPI contract (health check only)
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Portfolio is purely frontend (no backend) — all sections are static React components
+- Contact form uses react-hook-form + zod and posts to Formspree via VITE_FORMSPREE_ENDPOINT
+- Profile photo uses a styled "JP" initials avatar (no image file needed)
+- Framer-motion handles scroll-triggered fade-in and stagger animations
+- IntersectionObserver drives active nav link highlighting as user scrolls
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Single-page portfolio with: Hero ("Elevating your business through precision and clarity"), About, Expertise/Services (4 offerings), Skills/Tools (infinite marquee), Testimonials (client quotes), and a Contact form with validation.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Wants a professional, non-generic look
+- No formal design background — trusts the agent's design judgment
+- Photo not yet added (using JP initials avatar as placeholder)
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Google Fonts @import must be the VERY FIRST line of index.css (before @import "tailwindcss")
+- All CSS vars in index.css must be set to real HSL values — never leave `red` placeholders
+- VITE_FORMSPREE_ENDPOINT is set as a shared userenv in .replit — no need to add manually
 
 ## Pointers
 
 - See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- See the `react-vite` skill for frontend build conventions
