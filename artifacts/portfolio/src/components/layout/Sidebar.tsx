@@ -43,7 +43,10 @@ export function Sidebar() {
         />
 
         <div>
-          <h1 className="font-serif italic font-normal text-3xl xl:text-4xl leading-[1.2] mb-2 pl-2">
+          <h1
+            className="italic font-normal text-3xl xl:text-4xl leading-[1.2] mb-2 pl-2"
+            style={{ fontFamily: "'Lora', serif" }}
+          >
             Jefferson<br />Perolino
           </h1>
           <p className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground font-sans mb-2">
