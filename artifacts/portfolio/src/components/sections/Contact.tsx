@@ -41,7 +41,7 @@ export function Contact() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      const response = await fetch(import.meta.env.VITE_FORMSPREE_ENDPOINT || "https://formspree.io/f/placeholder", {
+      const response = await fetch(import.meta.env.VITE_FORMSPREE_ENDPOINT || "https://formspree.io/f/mnjwvwry", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export function Contact() {
               <div className="space-y-6">
                 <div>
                   <p className="text-sm text-primary-foreground/60 uppercase tracking-widest mb-1">Email</p>
-                  <p className="font-serif text-lg">inquiries@jeffersonperolino.com</p>
+                  <p className="font-serif text-lg">jeffersonperolino04@gmail.com</p>
                 </div>
                 <div>
                   <p className="text-sm text-primary-foreground/60 uppercase tracking-widest mb-1">Location</p>
