@@ -1,90 +1,58 @@
 import { motion } from "framer-motion";
-import { Calculator, PenTool, Calendar, Users } from "lucide-react";
+import { Calculator, PenTool, Calendar, Search } from "lucide-react";
+import { SectionLabel } from "./About";
 
 const services = [
   {
-    icon: <Calculator className="h-6 w-6" />,
+    icon: <Calculator className="h-5 w-5" />,
     title: "Financial Management",
-    description: "Rigorous attention to your financial health. Including comprehensive bookkeeping, budget modeling, precise expense tracking, and strategic financial reporting to inform your decisions.",
+    description:
+      "Bookkeeping, budget tracking, expense reporting, payroll assistance, and financial record organization.",
   },
   {
-    icon: <PenTool className="h-6 w-6" />,
+    icon: <PenTool className="h-5 w-5" />,
     title: "Professional Writing",
-    description: "Articulate and persuasive communication. I craft compelling business correspondence, detailed reports, and persuasive proposals, complemented by meticulous proofreading and editing.",
+    description:
+      "Business letters, email drafts, reports, proposals, and content writing tailored to your audience.",
   },
   {
-    icon: <Calendar className="h-6 w-6" />,
-    title: "Executive Assistance",
-    description: "Flawless operational support. Strategic calendar and inbox management, comprehensive data entry, in-depth research, and proactive administrative coordination.",
+    icon: <Calendar className="h-5 w-5" />,
+    title: "Administrative Support",
+    description:
+      "Calendar management, data entry, document preparation, email management, and task coordination.",
   },
   {
-    icon: <Users className="h-6 w-6" />,
-    title: "Client Relations",
-    description: "Representing your brand with poise. Delivering exceptional customer service, timely follow-ups, and structured CRM management to nurture your most valuable relationships.",
+    icon: <Search className="h-5 w-5" />,
+    title: "Research & Analysis",
+    description:
+      "Market research, competitor analysis, data gathering, and summarizing findings into actionable reports.",
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-};
-
 export function Services() {
   return (
-    <section id="services" className="py-32 bg-background">
-      <div className="container mx-auto px-6">
-        <div className="text-center max-w-2xl mx-auto mb-20">
-          <motion.h2 
-            className="text-3xl md:text-5xl font-serif mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            Areas of Expertise
-          </motion.h2>
-          <motion.p 
-            className="text-muted-foreground text-lg"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Delivering high-caliber support across the essential pillars of your business operations.
-          </motion.p>
-        </div>
+    <section id="services" className="px-10 xl:px-16 py-14 border-t border-border">
+      <SectionLabel>Services</SectionLabel>
 
-        <motion.div 
-          className="grid md:grid-cols-2 gap-8 lg:gap-12"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {services.map((service, index) => (
-            <motion.div 
-              key={index} 
-              variants={itemVariants}
-              className="p-8 md:p-10 rounded-2xl bg-card border border-border group hover:border-secondary transition-colors duration-500"
-            >
-              <div className="h-12 w-12 rounded-full bg-primary/5 text-secondary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                {service.icon}
-              </div>
-              <h3 className="text-xl font-serif font-bold mb-4">{service.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {service.description}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
+      <div className="space-y-8 max-w-2xl">
+        {services.map((service, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, delay: i * 0.08 }}
+            className="flex gap-4"
+          >
+            <div className="mt-0.5 text-muted-foreground shrink-0">
+              {service.icon}
+            </div>
+            <div>
+              <h3 className="font-sans font-semibold text-[15px] mb-1">{service.title}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );

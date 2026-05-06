@@ -1,18 +1,16 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { MapPin } from "lucide-react";
 import jpPhoto from "@assets/Untitled_design_20260116_074411_0000_1778088344072.jpg";
 
 const NAV_LINKS = [
   { id: "about", label: "About" },
-  { id: "services", label: "Expertise" },
-  { id: "skills", label: "Tools" },
-  { id: "testimonials", label: "Clientele" },
-  { id: "contact", label: "Contact" },
+  { id: "services", label: "Services" },
+  { id: "skills", label: "Skills" },
+  { id: "samples", label: "Samples" },
 ];
 
 export function Sidebar() {
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState("about");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -35,61 +33,50 @@ export function Sidebar() {
   };
 
   return (
-    <div className="flex flex-col h-full px-10 xl:px-14 py-14 justify-between bg-background border-r border-border">
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="mb-8">
-          <img
-            src={jpPhoto}
-            alt="Jefferson Perolino"
-            className="w-28 h-28 rounded-full object-cover object-top border border-border shadow-sm"
-          />
+    <div className="flex flex-col h-full px-8 xl:px-10 py-12 bg-background border-r border-border">
+      <div className="flex flex-col gap-5">
+        <img
+          src={jpPhoto}
+          alt="Jefferson Perolino"
+          className="w-24 h-24 rounded-full object-cover object-top"
+        />
+
+        <div>
+          <h1 className="font-serif italic text-3xl xl:text-4xl leading-[1.2] mb-2">
+            Jefferson<br />Perolino
+          </h1>
+          <p className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground font-sans mb-2">
+            Virtual Assistant
+          </p>
+          <p className="flex items-center gap-1 text-xs text-muted-foreground">
+            <MapPin className="h-3 w-3 shrink-0" />
+            Iloilo City, Philippines
+          </p>
         </div>
 
-        <h1 className="font-serif text-4xl xl:text-5xl italic leading-[1.15] mb-3 lowercase tracking-tight">
-          jefferson<br />perolino
-        </h1>
+        <div>
+          <span className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-secondary-foreground/20 bg-secondary text-secondary-foreground font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" />
+            Available for new clients
+          </span>
+        </div>
+      </div>
 
-        <p className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground mb-10 font-sans">
-          Virtual Assistant &amp; Strategist
-        </p>
-
-        <nav className="space-y-1">
-          {NAV_LINKS.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => scrollTo(link.id)}
-              className={`block w-full text-left text-sm py-1.5 transition-colors duration-200 font-sans ${
-                activeSection === link.id
-                  ? "text-foreground font-medium"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {link.label}
-            </button>
-          ))}
-        </nav>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-        className="space-y-4"
-      >
-        <Button
-          onClick={() => scrollTo("contact")}
-          className="w-full rounded-full text-sm"
-        >
-          Request a Consultation
-        </Button>
-        <p className="text-xs text-muted-foreground break-all">
-          jeffersonperolino04@gmail.com
-        </p>
-      </motion.div>
+      <nav className="mt-10 flex flex-col gap-1">
+        {NAV_LINKS.map((link) => (
+          <button
+            key={link.id}
+            onClick={() => scrollTo(link.id)}
+            className={`text-left text-sm py-1 transition-all duration-200 font-sans ${
+              activeSection === link.id
+                ? "text-foreground font-semibold"
+                : "text-muted-foreground hover:text-foreground font-normal"
+            }`}
+          >
+            {link.label}
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }

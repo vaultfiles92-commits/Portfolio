@@ -1,89 +1,84 @@
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowDown } from "lucide-react";
+
+const TITLES = [
+  "Virtual Assistant",
+  "Detail Oriented",
+  "Financial Manager",
+  "Professional Writer",
+];
+
+const TYPING_SPEED = 80;
+const DELETING_SPEED = 45;
+const PAUSE_AFTER_TYPE = 1800;
+const PAUSE_AFTER_DELETE = 400;
 
 export function Hero() {
-  const scrollToContact = () => {
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-  };
+  const [displayed, setDisplayed] = useState("");
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [phase, setPhase] = useState<"typing" | "pausing" | "deleting" | "waiting">("typing");
 
-  const scrollToAbout = () => {
-    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => {
+    const target = TITLES[titleIndex];
+
+    if (phase === "typing") {
+      if (displayed.length < target.length) {
+        const t = setTimeout(() => setDisplayed(target.slice(0, displayed.length + 1)), TYPING_SPEED);
+        return () => clearTimeout(t);
+      } else {
+        const t = setTimeout(() => setPhase("deleting"), PAUSE_AFTER_TYPE);
+        return () => clearTimeout(t);
+      }
+    }
+
+    if (phase === "deleting") {
+      if (displayed.length > 0) {
+        const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), DELETING_SPEED);
+        return () => clearTimeout(t);
+      } else {
+        const t = setTimeout(() => {
+          setTitleIndex((i) => (i + 1) % TITLES.length);
+          setPhase("typing");
+        }, PAUSE_AFTER_DELETE);
+        return () => clearTimeout(t);
+      }
+    }
+  }, [displayed, phase, titleIndex]);
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section 
-      id="home" 
-      className="min-h-screen flex flex-col justify-center relative pt-20 overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-secondary/10 via-background to-background pointer-events-none" />
-      
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex items-center gap-4 mb-8"
-          >
-            <Avatar className="h-16 w-16 border border-border">
-              <AvatarFallback className="bg-primary text-primary-foreground font-serif text-xl">JP</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="font-medium">Jefferson Perolino</p>
-              <p className="text-muted-foreground text-sm">Virtual Assistant & Strategist</p>
-            </div>
-          </motion.div>
+    <section id="hero" className="px-10 xl:px-16 pt-16 pb-16">
+      <div className="max-w-2xl">
+        <h2 className="font-serif italic text-4xl xl:text-5xl mb-6 min-h-[1.3em] leading-tight">
+          {displayed}
+          <span className="inline-block w-[2px] h-[0.85em] bg-foreground ml-1 align-middle animate-pulse" />
+        </h2>
 
-          <motion.h1 
-            className="text-5xl md:text-7xl lg:text-8xl font-serif leading-tight mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            Elevating your business through <span className="text-secondary italic">precision</span> and <span className="text-secondary italic">clarity</span>.
-          </motion.h1>
+        <p className="text-muted-foreground text-base leading-relaxed mb-8 max-w-md">
+          A self-driven virtual assistant from the Philippines helping clients
+          stay organized, financially sound, and professionally represented
+          — all remotely.
+        </p>
 
-          <motion.p 
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+        <div className="flex flex-wrap gap-3">
+          <Button
+            onClick={() => scrollTo("contact")}
+            className="rounded-full px-6 h-10 text-sm font-medium"
           >
-            Specializing in sophisticated financial management and professional writing for executives, entrepreneurs, and high-growth teams. I handle the details, so you can focus on the vision.
-          </motion.p>
-
-          <motion.div 
-            className="flex flex-wrap gap-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
+            Get in touch
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => scrollTo("samples")}
+            className="rounded-full px-6 h-10 text-sm font-medium bg-transparent"
           >
-            <Button size="lg" className="rounded-full px-8 text-base h-14" onClick={scrollToContact}>
-              Request a Consultation
-            </Button>
-            <Button variant="outline" size="lg" className="rounded-full px-8 text-base h-14 bg-transparent" onClick={scrollToAbout}>
-              Discover My Philosophy
-            </Button>
-          </motion.div>
+            View work
+          </Button>
         </div>
       </div>
-
-      <motion.div 
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        onClick={scrollToAbout}
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-        >
-          <ArrowDown className="h-6 w-6" />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }
